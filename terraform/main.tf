@@ -1,5 +1,7 @@
 provider "aws" {
   region = var.aws_region
+  secret_key = var.aws_secret_access_key
+  region     = var.aws_region
 }
 
 resource "aws_security_group" "ec2_security_group" {
