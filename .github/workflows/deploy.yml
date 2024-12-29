@@ -21,13 +21,14 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       EC2_PUBLIC_KEY: ${{ secrets.EC2_PUBLIC_KEY }}
+      EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
     steps:
       # Step 1: Checkout the repository
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      # Step 2: Check environment variables (    -optional for debugging purposes)
+      # Step 2: Check environment variables (optional for debugging purposes)
       - name: Check environment variables
         run: |
           echo "AWS_REGION=${{ secrets.AWS_REGION }}"
@@ -35,12 +36,22 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           echo "EC2_PUBLIC_KEY=${{ secrets.EC2_PUBLIC_KEY }}"
 
-      # Step 3: SSH into EC2 Instance and Deploy the Docker image
+      # Step 3: SSH into EC2 Instance and Deploy Docker Image
       - name: SSH into EC2 Instance and Deploy Docker Image
         run: |
           EC2_IP=${{ secrets.EC2_PUBLIC_IP }}  # Manually set your EC2 instance's public IP
           echo "Connecting to EC2 instance at $EC2_IP"
-          ssh -o StrictHostKeyChecking=no -i "${{ secrets.EC2_SSH_PRIVATE_KEY }}" ec2-user@$EC2_IP <<EOF
+
+          # Set up the SSH key and permissions
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Add EC2 IP to known hosts to avoid prompt
+          ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
+
+          # SSH into EC2 instance
+          ssh -i ~/.ssh/id_rsa ec2-user@$EC2_IP <<EOF
             # Install Docker and Docker Compose
             sudo yum update -y
             sudo amazon-linux-extras install docker
@@ -51,11 +62,9 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/deploymysql:latest
 
             # Clone docker-compose repository
-            git clone git clone https://github.com/iumar288/DockerCompose
+            git clone https://github.com/iumar288/DockerCompose
             cd DockerCompose/mysql
 
             # Run Docker Compose to deploy
             docker-compose up -d
           EOF
-        env:
-          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
