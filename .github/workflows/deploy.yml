@@ -7,6 +7,12 @@ on:
       - completed
 
 jobs:
+  check-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print message
+        run: echo "Workflow received completion status from Build and Dockerize."
+
   deploy-to-ec2:
     runs-on: ubuntu-latest
     needs: build-and-deploy
