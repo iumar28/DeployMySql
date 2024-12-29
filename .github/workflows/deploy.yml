@@ -51,7 +51,7 @@ jobs:
           ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
 
           # SSH into EC2 instance
-          ssh -i ~/.ssh/id_rsa ec2-user@$EC2_IP <<EOF
+          ssh -i ~/.ssh/id_rsa ubuntu@ec2-35-175-152-81.compute-1.amazonaws.com <<EOF
             # Install Docker and Docker Compose
             sudo yum update -y
             sudo amazon-linux-extras install docker
