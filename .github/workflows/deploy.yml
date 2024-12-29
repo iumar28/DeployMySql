@@ -37,6 +37,7 @@ jobs:
       # Step 2: Initialize Terraform
       - name: Terraform Init
         run: terraform init
+        working-directory: ./terraform
 
       # Step 3: Apply Terraform Configuration (or deploy any service)
       - name: Terraform Apply
