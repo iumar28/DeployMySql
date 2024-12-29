@@ -52,10 +52,17 @@ jobs:
           # SSH into EC2 instance
           ssh -i ~/.ssh/ec2-keypair.pem ubuntu@35.175.152.81 <<EOF
             # Install Docker and Docker Compose
-            sudo yum update -y
-            sudo amazon-linux-extras install docker
-            sudo service docker start
-            sudo usermod -a -G docker ec2-user
+            sudo apt update
+            sudo apt update
+            sudo systemctl start docker
+            sudo systemctl enable docker
+           
+            # Add user to Docker group
+            sudo usermod -aG docker ubuntu
+
+            # Install Docker Compose
+            sudo apt install -y python3-pip
+            sudo pip3 install docker-compose
 
             # Pull Docker image from Docker Hub
             docker pull ${{ secrets.DOCKER_USERNAME }}/deploymysql:latest
