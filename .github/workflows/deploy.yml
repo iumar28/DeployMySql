@@ -45,13 +45,13 @@ jobs:
           # Set up the SSH key and permissions
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/ec2-keypair.pem
 
           # Add EC2 IP to known hosts to avoid prompt
-          ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
 
           # SSH into EC2 instance
-          ssh -t -i ~/.ssh/id_rsa ubuntu@ec2-35-175-152-81.compute-1.amazonaws.com <<EOF
+          ssh -t -i ~/.ssh/ec2-keypair.pem ubuntu@ec2-35-175-152-81.compute-1.amazonaws.com <<EOF
             # Install Docker and Docker Compose
             sudo yum update -y
             sudo amazon-linux-extras install docker
