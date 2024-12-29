@@ -59,7 +59,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/deploymysql:latest
 
             # Clone docker-compose repository
-            git clone https://github.com/iumar28/deploymysql.git
+            git clone https://github.com/iumar28/DeployMySql/blob/main/docker-compose.yml
             cd deploymysql
 
             # Run Docker Compose to deploy
