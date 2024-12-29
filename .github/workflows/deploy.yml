@@ -38,8 +38,20 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      #Step 3.1 print the variables
+      - name: Check environment variables
+        run: |
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}"
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}"
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          echo "EC2_AMI_ID=${{ secrets.EC2_AMI_ID }}"
+          echo "EC2_INSTANCE_TYPE=${{ secrets.EC2_INSTANCE_TYPE }}"
+          echo "EC2_PUBLIC_KEY=${{ secrets.EC2_PUBLIC_KEY }}"
+
+
       # Step 3: Apply Terraform Configuration (or deploy any service)
       - name: Terraform Apply
+        
         run: |
           cd terraform
           terraform apply -auto-approve
