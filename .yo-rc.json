@@ -1,0 +1,27 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "baseName": "DeployMySql",
+    "buildTool": "maven",
+    "cacheProvider": "ehcache",
+    "clientFramework": "react",
+    "clientPackageManager": "npm",
+    "clientTheme": null,
+    "creationTimestamp": 1735474731202,
+    "databaseType": "sql",
+    "enableHibernateCache": true,
+    "enableTranslation": true,
+    "entities": [],
+    "jhipsterVersion": "8.8.0",
+    "jwtSecretKey": "mySecretKey",
+    "languages": ["en"],
+    "microfrontend": false,
+    "nativeLanguage": "en",
+    "otherLanguages": null,
+    "prodDatabaseType": "mysql",
+    "reactive": false,
+    "serviceDiscoveryType": "eureka",
+    "testFrameworks": ["cypress", "gatling"],
+    "websocket": "spring-websocket"
+  }
+}

@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: iumar28
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: deploymysqldb
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  jhipster:
+    image: ${DOCKER_USERNAME}/deploymysql:mysql
+    container_name: deploymysql-mysql
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/deploymysqldb
+      SPRING_DATASOURCE_USERNAME: iumar28
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
