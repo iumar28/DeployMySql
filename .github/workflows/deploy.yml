@@ -27,7 +27,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      # Step 2: Check environment variables (optional for debugging purposes)
+      # Step 2: Check environment variables (    -optional for debugging purposes)
       - name: Check environment variables
         run: |
           echo "AWS_REGION=${{ secrets.AWS_REGION }}"
